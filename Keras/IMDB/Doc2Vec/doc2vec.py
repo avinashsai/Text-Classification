@@ -25,11 +25,11 @@ train_data = []
 train_labels = np.zeros(25000)
 train_labels[0:12500] = 1
 
-with open('/train_pos.txt','r',encoding='latin1') as f:
+with open(path+'/train_pos.txt','r',encoding='latin1') as f:
   for line in f:
     train_data.append(line[:-1])
 
-with open('/train_neg.txt','r',encoding='latin1') as f:
+with open(path+'/train_neg.txt','r',encoding='latin1') as f:
   for line in f:
     train_data.append(line[:-1])
 
