@@ -19,16 +19,17 @@ from keras.models import Sequential
 from keras.layers import Conv2D,MaxPooling2D,LSTM,Bidirectional,Activation
 from keras.models import Model
 
+path = '../../../Datasets/IMDB'
 
 train_data = []
 train_labels = np.zeros(25000)
 train_labels[0:12500] = 1
 
-with open('train_pos.txt','r',encoding='latin1') as f:
+with open('/train_pos.txt','r',encoding='latin1') as f:
   for line in f:
     train_data.append(line[:-1])
 
-with open('train_neg.txt','r',encoding='latin1') as f:
+with open('/train_neg.txt','r',encoding='latin1') as f:
   for line in f:
     train_data.append(line[:-1])
 
@@ -38,11 +39,11 @@ test_data = []
 test_labels = np.zeros(25000)
 test_labels[0:12500] = 1
 
-with open('test_pos.txt','r',encoding='latin1') as f:
+with open(path+'/test_pos.txt','r',encoding='latin1') as f:
   for line in f:
     test_data.append(line[:-1])
 
-with open('test_neg.txt','r',encoding='latin1') as f:
+with open(path+'/test_neg.txt','r',encoding='latin1') as f:
   for line in f:
     test_data.append(line[:-1])
 
@@ -73,8 +74,9 @@ def make_shuffle(sentences):
 
 for epoch in range(20):
   print(epoch,end=" ")
-  doc2vec_model.train(data,total_examples=doc2vec_model.corpus_count,epochs=doc2vec_model.epochs)
   data = make_shuffle(data)
+  doc2vec_model.train(data,total_examples=doc2vec_model.corpus_count,epochs=doc2vec_model.epochs)
+  
 
 train_vectors = np.zeros((train_length,100))
 
