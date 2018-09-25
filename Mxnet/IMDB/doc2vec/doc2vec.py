@@ -19,14 +19,14 @@ def create_tags(train_data,train_labels,test_data,test_labels):
 			tag = ['train_pos_'+str(i)]
 		else:
 			tag = ['train_neg_'+str(i)]
-		tagged_data.append(tag_sentence(train_data[i],tag))
+		tagged_data.append(tag_sentence(train_data[i].split(),tag))
 
 	for i in range(25000):
 		if(test_labels[i]==1):
 			tag = ['test_pos_'+str(i)]
 		else:
 			tag = ['test_neg_'+str(i)]
-		tagged_data.append(tag_sentence(test_data[i],tag))
+		tagged_data.append(tag_sentence(test_data[i].split(),tag))
 
 	return tagged_data
 
