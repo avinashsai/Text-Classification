@@ -59,11 +59,11 @@ test_length = len(test_data)
 
 for i in range(25000):
   tag = ["train_"+str(i)]
-  data.append(tag_sentence(train_data[i],tag))
+  data.append(tag_sentence(train_data[i].split(),tag))
 
 for i in range(25000):
   tag = ["test_"+str(i)]
-  data.append(tag_sentence(test_data[i],tag))
+  data.append(tag_sentence(test_data[i].split(),tag))
 
 doc2vec_model = Doc2Vec(min_count=1, window=10, vector_size=100, sample=1e-4, negative=5, workers=7)
 
