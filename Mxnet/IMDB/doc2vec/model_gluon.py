@@ -11,15 +11,25 @@ def define_gluon_model(arch):
 	net = gluon.nn.Sequential()
 
 	with net.name_scope():
-		net.add(gluon.nn.Conv1D(channels=20,kernel_size=3,activation='relu'))
-		net.add(gluon.nn.MaxPool1D(2))
-		net.add(gluon.nn.Dropout(0.5))
-		net.add(gluon.nn.Conv1D(channels=30,kernel_size=3,activation='relu'))
-		net.add(gluon.nn.MaxPool1D(2))
-		net.add(gluon.nn.Dropout(0.5))
+		net.add(gluon.nn.Conv2D(channels=32,kernel_size=3,padding=6))
+		net.add(gluon.nn.BatchNorm())
+		net.add(gluon.nn.Activation('relu'))
+		net.add(gluon.nn.MaxPool2D(pool_size=(2,2)))
+		net.add(gluon.nn.Dropout(0.2))
+		net.add(gluon.nn.Conv2D(channels=16,kernel_size=3,padding=6))
+		net.add(gluon.nn.BatchNorm())
+		net.add(gluon.nn.Activation('relu'))
+		net.add(gluon.nn.MaxPool2D(pool_size=(2,2)))
+		net.add(gluon.nn.Dropout(0.2))
+		net.add(gluon.nn.Conv2D(channels=6,kernel_size=3,padding=6))
+		net.add(gluon.nn.BatchNorm())
+		net.add(gluon.nn.Activation('relu'))
+		net.add(gluon.nn.MaxPool2D(pool_size=(2,2)))
+		net.add(gluon.nn.Dropout(0.2))
 		net.add(gluon.nn.Flatten())
-		net.add(gluon.nn.Dense(32,activation='relu'))
+		net.add(gluon.nn.Dense(100,activation='relu'))
 		net.add(gluon.nn.Dropout(0.5))
+		net.add(gluon.nn.Dense(30,activation='relu'))
 		net.add(gluon.nn.Dense(8,activation='relu'))
 		net.add(gluon.nn.Dense(1,activation='sigmoid'))
 
@@ -27,8 +37,8 @@ def define_gluon_model(arch):
 
 
 def calculate_gluon_accuracy(net,X,y):
-	if(X.ndim!=3):	
-		X = X.reshape((int(X.shape[0]),10,10))
+	if(X.ndim!=4):	
+		X = X.reshape((int(X.shape[0]),10,10,1))
 	acc = mx.metric.Accuracy()
 	pred = net(X)
 	ypred = (pred>=0.5)
@@ -48,8 +58,7 @@ def train_gluon_model(net,Xtrain,ytrain,context,lr,batchsize,numepochs,optimizer
 
 	batches = int(train_l/batchsize)
 
-	Xtrain = Xtrain.reshape((train_l,10,10))
-	
+	Xtrain = Xtrain.reshape((train_l,10,10,1))
 
 	for epoch in range(numepochs):
 		total_loss = mx.nd.zeros(batches)
@@ -73,10 +82,6 @@ def train_gluon_model(net,Xtrain,ytrain,context,lr,batchsize,numepochs,optimizer
 
 		print("Epoch {} Loss {} Train Accuracy {}".format(epoch,actual_loss,train_acc))
 
+
 	return net
-
-
-
-
-
 
