@@ -72,7 +72,7 @@ hiddensize = 50
 def generate_indices(train,test,max_num_words,max_sent_len):
   
   tokenizer = Tokenizer(num_words=maxwords)
-  tokenizer.fit_on_texts(train)
+  tokenizer.fit_on_texts(train+test)
   
   train_tokens = tokenizer.texts_to_sequences(train)
   train_indices = pad_sequences(train_tokens,max_sent_len)
