@@ -7,10 +7,14 @@ This repository consists of the implementations of various research papers on Te
 Under Each folder i will provide detailed description and necessary packages to install and instructions to run the models
 
 # Description
-Folder descripttion:
+Folder description:
+
 Datasets - All the datasets
+
 Keras - Implementation in Keras
+
 Pytorch - Implementation in Pytorch
+
 Mxnet - Implementation in Mxnet
 
 # Contributions 
