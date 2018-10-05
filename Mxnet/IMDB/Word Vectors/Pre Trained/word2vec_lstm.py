@@ -102,9 +102,9 @@ optimizer = 'rmsprop'
 
 batches = int(train_length/batchsize)
 
-numepochs = 2
+numepochs = 50
 
-optim = gluon.Trainer(model.collect_params(), optimizer, {'learning_rate': 0.001})
+optim = gluon.Trainer(model.collect_params(), optimizer, {'learning_rate': lr})
 
 def evaluate_accuracy(net,X,y):
   acc = mx.metric.Accuracy()
