@@ -75,7 +75,7 @@ train_corpus,test_corpus = load_files(path)
 train_length = len(train_corpus)
 test_length = len(test_corpus)
 
-numclasses = 2
+numclasses = 1
 
 train_labels = torch.zeros(train_length)
 train_labels[0:12500] = 1
