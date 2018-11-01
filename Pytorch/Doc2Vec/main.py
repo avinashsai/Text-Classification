@@ -46,7 +46,7 @@ def main():
 
     args = vars(parser.parse_args())
     if((25000%(args['batchsize']))!=0):
-        raise ValueError("Please Batch Size that divides 25000")
+        raise ValueError("Please Specify Batch Size that divides 25000")
     
     
     tagged_data = create_tags(train_data,train_labels,test_data,test_labels)
