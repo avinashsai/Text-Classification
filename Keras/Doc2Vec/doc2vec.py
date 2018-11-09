@@ -96,7 +96,7 @@ for i in range(train_length):
 	_,label,_ = tag.split("_")
 	train_vectors[i] = doc2vec_model.docvecs[tag]
 	if(label=='pos'):
-		train_vectors[i] = 1
+		train_labels[i] = 1
 
 
 
@@ -107,7 +107,7 @@ for i in range(test_length):
 	_,label,_ = tag.split("_")
 	train_vectors[i] = doc2vec_model.infer_vector(tagged_test[i].words)
 	if(label=='pos'):
-		test_vectors[i] = 1
+		test_labels[i] = 1
 
 
 train_vecs = train_vectors.reshape((train_length,10,10))
