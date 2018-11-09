@@ -37,13 +37,13 @@ def main():
     args = vars(parser.parse_args())
     
     
-    tagged_data = create_tags(train_data,train_labels,test_data,test_labels)
+    tagged_train,tagged_test = create_tags(train_data,train_labels,test_data,test_labels)
 
     doc2vec_model = create_doc2vec_model(int(args['windowsize']),int(args['model']))
 
-    doc2vec_model,tagged_data = train_doc2vec_model(doc2vec_model,int(args['doc2vecepochs']),tagged_data)
+    doc2vec_model,tagged_train = train_doc2vec_model(doc2vec_model,int(args['doc2vecepochs']),tagged_train)
 
-    train_vectors,train_labels,test_vectors,test_labels = generate_vectors(doc2vec_model,tagged_data,train_length,test_length)
+    train_vectors,train_labels,test_vectors,test_labels = generate_vectors(doc2vec_model,tagged_train,tagged_test,train_length,test_length)
     
     model,ctx = define_gluon_model(args['cpu_gpu'])
 

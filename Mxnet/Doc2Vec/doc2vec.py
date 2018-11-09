@@ -13,22 +13,23 @@ def tag_sentence(sentence,label):
 	return TaggedDocument(sentence,label)
 
 def create_tags(train_data,train_labels,test_data,test_labels):
-	tagged_data = []
+	tagged_train = []
+	tagged_test= []
 	for i in range(25000):
 		if(train_labels[i]==1):
 			tag = ['train_pos_'+str(i)]
 		else:
 			tag = ['train_neg_'+str(i)]
-		tagged_data.append(tag_sentence(train_data[i].split(),tag))
+		tagged_train.append(tag_sentence(train_data[i].split(),tag))
 
 	for i in range(25000):
 		if(test_labels[i]==1):
 			tag = ['test_pos_'+str(i)]
 		else:
 			tag = ['test_neg_'+str(i)]
-		tagged_data.append(tag_sentence(test_data[i].split(),tag))
+		tagged_test.append(tag_sentence(test_data[i].split(),tag))
 
-	return tagged_data
+	return tagged_train,tagged_test
 
 def create_doc2vec_model(windowsize,modeltype):
 
@@ -48,31 +49,26 @@ def train_doc2vec_model(model,num_epochs,data):
 
 	return model,data 
 
-def generate_vectors(model,data,train_l,test_l):
+def generate_vectors(model,traindata,testdata,train_l,test_l):
 	train_vectors = np.zeros((train_l,100))
 	test_vectors =np.zeros((test_l,100))
 
 	train_labels = np.zeros(train_l)
 	test_labels = np.zeros(test_l)
 
-	train_index = 0
-	test_index = 0
-	
-	for i in range(50000):
-		tag = (data[i].tags)[0]
-		ind,lab,_ = tag.split("_")
-		if(ind=="train"):
-			train_vectors[train_index] = model[tag]
-			if(lab=="pos"):
-				train_labels[train_index] = 1
+	for i in range(train_l):
+		tag = traindata[i].tags[0]
+		_,label,_ = tag.split("_")
+		train_vectors[i] = model.docvecs[tag]
+		if(label=='pos'):
+			train_labels[i] = 1
 
-			train_index+=1
+	for i in range(test_l):
+		tag = testdata[i].tags[0]
+		_,label,_ = tag.split("_")
+		test_vectors[i] = model.infer_vector(testdata[i].words)
+	if(label=='pos'):
+		test_labels[i] = 1
 
-		else:
-			test_vectors[test_index] = model[tag]
-			if(lab=="pos"):
-				test_labels[test_index] = 1
-
-			test_index+=1
 
 	return train_vectors,train_labels,test_vectors,test_labels
