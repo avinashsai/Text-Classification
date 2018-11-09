@@ -8,7 +8,7 @@ def readfiles():
 	train_data = []
 	train_labels = np.zeros(25000)
 
-	path = '/home/avinashsai/Documents/Datasets/IMDB'
+	path = '../../Datasets/IMDB'
 	
 	with open(path+'/train_pos.txt','r',encoding='latin1') as f:
 		for line in f:
