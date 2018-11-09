@@ -19,7 +19,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D,MaxPooling2D,LSTM,Bidirectional,Activation
 from keras.models import Model
 
-path = '/home/avinashsai/Documents/Datasets/IMDB'
+path = '../../Datasets/IMDB'
 
 train_data = []
 train_labels = np.zeros(25000)
