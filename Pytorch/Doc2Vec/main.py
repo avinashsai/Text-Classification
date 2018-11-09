@@ -46,16 +46,16 @@ def main():
 
     args = vars(parser.parse_args())
     if((25000%(args['batchsize']))!=0):
-        raise ValueError("Please Specify Batch Size that divides 25000")
+        raise ValueError("Please Batch Size that divides 25000")
     
     
-    tagged_data = create_tags(train_data,train_labels,test_data,test_labels)
+    tagged_train,tagged_test = create_tags(train_data,train_labels,test_data,test_labels)
 
     doc2vec_model = create_doc2vec_model(args['windowsize'],args['model'])
 
-    doc2vec_model,tagged_data = train_doc2vec_model(doc2vec_model,args['doc2vecepochs'],tagged_data)
+    doc2vec_model,tagged_train = train_doc2vec_model(doc2vec_model,args['doc2vecepochs'],tagged_train)
 
-    train_vectors,train_labels,test_vectors,test_labels = generate_vectors(doc2vec_model,tagged_data,train_length,test_length)
+    train_vectors,train_labels,test_vectors,test_labels = generate_vectors(doc2vec_model,tagged_train,tagged_test,train_length,test_length)
     
     
     model = define_pytorch_model(args['cpu_gpu'])
