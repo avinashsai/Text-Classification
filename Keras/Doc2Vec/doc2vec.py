@@ -19,7 +19,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D,MaxPooling2D,LSTM,Bidirectional,Activation
 from keras.models import Model
 
-path = '../../../Datasets/IMDB'
+path = '/home/avinashsai/Documents/Datasets/IMDB'
 
 train_data = []
 train_labels = np.zeros(25000)
@@ -52,41 +52,62 @@ print(len(test_data))
 def tag_sentence(sentence,tag):
   return TaggedDocument(sentence,tag)
 
-data = []
+tagged_train = []
+tagged_test = []
 
 train_length = len(train_data)
 test_length = len(test_data)
 
 for i in range(25000):
-  tag = ["train_"+str(i)]
-  data.append(tag_sentence(train_data[i].split(),tag))
+	if(i>=12500):
+		tag = ["train_neg_"+str(i)]
+	else:
+		tag = ["train_pos_"+str(i)]
+	tagged_train.append(tag_sentence(train_data[i].split(),tag))
+
+
 
 for i in range(25000):
-  tag = ["test_"+str(i)]
-  data.append(tag_sentence(test_data[i].split(),tag))
+  if(i>=12500):
+  	tag = ["test_neg_"+str(i)]
+  else:
+  	tag = ["test_pos_"+str(i)]
+  tagged_test.append(tag_sentence(test_data[i].split(),tag))
+
+
 
 doc2vec_model = Doc2Vec(min_count=1, window=10, vector_size=100, sample=1e-4, negative=5, workers=7)
 
-doc2vec_model.build_vocab(data)
+doc2vec_model.build_vocab(tagged_train)
 
 def make_shuffle(sentences):
     return shuffle(sentences)
 
 for epoch in range(20):
   print(epoch,end=" ")
-  data = make_shuffle(data)
-  doc2vec_model.train(data,total_examples=doc2vec_model.corpus_count,epochs=doc2vec_model.epochs)
+  tagged_train = make_shuffle(tagged_train)
+  doc2vec_model.train(tagged_train,total_examples=doc2vec_model.corpus_count,epochs=doc2vec_model.epochs)
   
 
 train_vectors = np.zeros((train_length,100))
 
 for i in range(train_length):
-  train_vectors[i] = doc2vec_model.docvecs["train_"+str(i)]
+	tag = tagged_train[i].tags[0]
+	_,label,_ = tag.split("_")
+	train_vectors[i] = doc2vec_model.docvecs[tag]
+	if(label=='pos'):
+		train_vectors[i] = 1
+
+
 
 test_vectors = np.zeros((test_length,100))
 
 for i in range(test_length):
-  test_vectors[i] = doc2vec_model.docvecs["test_"+str(i)]
+	tag = tagged_test[i].tags[0]
+	_,label,_ = tag.split("_")
+	train_vectors[i] = doc2vec_model.infer_vector(tagged_test[i].words)
+	if(label=='pos'):
+		test_vectors[i] = 1
 
 
 train_vecs = train_vectors.reshape((train_length,10,10))
@@ -115,7 +136,7 @@ cnn1d_model.fit(train_vecs,train_labels,batch_size=50,epochs=100)
 
 test_vecs = test_vectors.reshape((test_length,10,10))
 
-acc = cnn1d_model.evaluate(test_vecs,test_labels)[0]
+acc = cnn1d_model.evaluate(test_vecs,test_labels)[1]
 
 print(acc)
 
