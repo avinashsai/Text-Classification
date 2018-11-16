@@ -35,7 +35,7 @@ def main():
 	hidden_size = args['hiddensize']
 
 
-	imdb_path = '/home/avinashsai/Documents/Datasets/IMDB/'
+	imdb_path = '../../Datasets/IMDB/'
 	rotten_path = '../../Datasets/Rotten Tomatoes/'
 	testsize = 0.2
 
