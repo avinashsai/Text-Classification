@@ -45,5 +45,6 @@ class Model():
 	def compute_accuracy(self,model,Xtest,ytest):
 		if(np.amax(ytest)>1):
 			ytest = to_categorical(ytest)
-		return model.evaluate(Xtest,ytest)[1]
+		acc = model.evaluate(Xtest,ytest)[1]
+		return acc*100
 

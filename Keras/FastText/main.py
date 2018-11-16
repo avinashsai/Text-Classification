@@ -35,7 +35,7 @@ def main():
 	hidden_size = args['hiddensize']
 
 
-	imdb_path = '../../Datasets/IMDB/'
+	imdb_path = '/home/avinashsai/Documents/Datasets/IMDB/'
 	rotten_path = '../../Datasets/Rotten Tomatoes/'
 	testsize = 0.2
 
@@ -57,8 +57,8 @@ def main():
 
 	ft = fasttext(Window_Size,Vector_Size,Min_Count,Fast_Text_Epochs)
 
-	imdb_ft_model = ft.imdb_fasttext_model(imdb_corpus,imdb_Xtrain,imdb_Xtest)
-	rotten_ft_model = ft.rotten_fasttext_model(rotten_corpus,rotten_Xtrain,rotten_Xtest)
+	imdb_ft_model = ft.imdb_fasttext_model(imdb_Xtrain)
+	rotten_ft_model = ft.rotten_fasttext_model(rotten_Xtrain)
 
 	imdb_train,imdb_test = load_imdb_vectors(imdb_Xtrain,imdb_Xtest,Vector_Size,imdb_len,imdb_ft_model)
 	rotten_train,rotten_test = load_rotten_vectors(rotten_Xtrain,rotten_Xtest,Vector_Size,rt_len,rotten_ft_model)
