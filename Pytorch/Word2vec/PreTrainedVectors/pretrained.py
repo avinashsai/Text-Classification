@@ -177,7 +177,7 @@ numepochs = 1
 def evaluate_acc(net,loader):
   
   correct = 0
-  
+  net.eval()
   for batch_idx,(X,y) in enumerate(loader):
     
     #X,y = X.to(device),y.to(device)
@@ -191,6 +191,7 @@ def evaluate_acc(net,loader):
   return float((100*correct)/25000)
 
 for epoch in range(numepochs):
+  model.train()
   for batch_idx,(Xtrain,ytrain) in enumerate(train_loaders):
     
     #Xtrain,ytrain = Xtrain.to(device),ytrain.to(device)
