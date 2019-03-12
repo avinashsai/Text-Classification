@@ -112,12 +112,12 @@ def generate_indices(sentence):
   return indices
 
 for i in range(train_length):
-  train_indices[i] = generate_indices(train_corpus[i])
+  train_indices[i,:] = generate_indices(train_corpus[i])
 
 test_indices = torch.zeros((test_length,maxsentencelength))
 
 for i in range(test_length):
-  test_indices[i] = generate_indices(test_corpus[i])
+  test_indices[i,:] = generate_indices(test_corpus[i])
 
 train_indices = train_indices.long()
 test_indices = test_indices.long()
