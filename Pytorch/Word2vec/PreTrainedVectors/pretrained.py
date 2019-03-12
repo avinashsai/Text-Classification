@@ -87,9 +87,6 @@ words = []
 for sentence in train_corpus:
   words+=sentence.split()
 
-for sentence in test_corpus:
-  words+=sentence.split()
-
 maxwords = 20000
 
 maxsentencelength = 40
